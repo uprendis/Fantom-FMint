@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "Fantom DeFi implementation of fMint module.",
   "main": "truffle-config.js",
-  "scripts": {},
+  "scripts": {
+    "build": "truffle build",
+    "test": "truffle test",
+    "truffle": "truffle"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Fantom-foundation/Fantom-FMint.git"
@@ -23,5 +27,28 @@
   "dependencies": {
     "@openzeppelin/contracts-ethereum-package": "^2.5.0",
     "@openzeppelin/upgrades": "^2.8.0"
+  },
+  "devDependencies": {
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0",
+    "bignumber.js": "^9.0.0",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "chai-bignumber": "^3.0.0",
+    "eslint": "^6.2.2",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "ethereumjs-testrpc-sc": "^6.5.1-sc.0",
+    "karma": "^4.3.0",
+    "lodash": "^4.17.15",
+    "openzeppelin-test-helpers": "^0.4.3",
+    "solidity-coverage": "^0.7.1",
+    "truffle-flattener": "^1.5.0",
+    "web3-utils": "^1.3.0"
   }
 }
