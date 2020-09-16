@@ -12,6 +12,12 @@ interface IFantomDeFiTokenStorage {
     // totalOf returns the value of current balance of specified account.
     function totalOf(address _account) external view returns (uint256);
 
+    // totalOfAfterAdd returns the value of current balance of specified account after adding specified tokens.
+    function totalOfAfterAdd(address _account, address _addToken, uint256 _addAmount) external view returns (uint256);
+
+    // totalOfAfterSub returns the value of current balance of specified account after subtracting specified tokens.
+    function totalOfAfterSub(address _account, address _subToken, uint256 _subAmount) external view returns (uint256);
+
     // balanceOf returns the balance of the given token on the given account.
     function balanceOf(address _account, address _token) external view returns (uint256);
 

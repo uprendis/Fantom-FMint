@@ -110,6 +110,44 @@ contract FantomDeFiTokenStorage is IFantomDeFiTokenStorage
         return value;
     }
 
+    // totalOfAfterAdd returns the value of current balance of specified account after adding specified tokens.
+    function totalOfAfterAdd(address _account, address _addToken, uint256 _addAmount) public view returns (uint256 value) {
+        // loop all registered debt tokens
+        for (uint i = 0; i < tokens.length; i++) {
+            // advance the result by the value of current token balance of this token
+            uint256 amount = balance[_account][tokens[i]];
+            if (tokens[i] == _addToken) {
+                amount = amount.add(_addAmount);
+                _addAmount = 0;
+            }
+            value = value.add(tokenValue(tokens[i], amount));
+        }
+        if (_addAmount != 0) {
+            value = value.add(tokenValue(_addToken, _addAmount));
+        }
+
+        return value;
+    }
+
+    // totalOfAfterSub returns the value of current balance of specified account after subtracting specified tokens.
+    function totalOfAfterSub(address _account, address _subToken, uint256 _subAmount) public view returns (uint256 value) {
+        // loop all registered debt tokens
+        for (uint i = 0; i < tokens.length; i++) {
+            // advance the result by the value of current token balance of this token
+            uint256 amount = balance[_account][tokens[i]];
+            if (tokens[i] == _subToken) {
+                amount = amount.sub(_subAmount);
+                _subAmount = 0;
+            }
+            value = value.add(tokenValue(tokens[i], amount));
+        }
+        if (_subAmount != 0) {
+            value = value.sub(tokenValue(_subToken, _subAmount));
+        }
+
+        return value;
+    }
+
     // balanceOf returns the balance of the given token on the given account.
     function balanceOf(address _account, address _token) public view returns (uint256) {
         return balance[_account][_token];

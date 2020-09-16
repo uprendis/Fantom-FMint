@@ -53,17 +53,11 @@ contract FantomMintBalanceGuard is FantomMintErrorCodes, IFantomMintBalanceGuard
     // Token value related functions
     // -------------------------------------------------------------
 
-    // debtValueOf (abstract) returns the value of account debt.
-    function debtValueOf(address _account) public view returns (uint256);
+    // debtValueAfterAdd (abstract) returns the value of account debt.
+    function debtValueAfterAdd(address _account, address _addDebtToken, uint256 _addDebt) public view returns (uint256);
 
-    // collateralValueOf (abstract) returns the value of account collateral.
-    function collateralValueOf(address _account) public view returns (uint256);
-
-    // debtTokenValue (abstract) calculates the value of the given debt amount of the token specified.
-    function debtTokenValue(address _token, uint256 _amount) public view returns (uint256);
-
-    // collateralTokenValue (abstract) calculates the value of the given collateral amount of the token specified.
-    function collateralTokenValue(address _token, uint256 _amount) public view returns (uint256);
+    // collateralValueAfterSub (abstract) returns the value of account collateral.
+    function collateralValueAfterSub(address _account, address _subCollateralToken, uint256 _subCollateral) public view returns (uint256);
 
     // -------------------------------------------------------------
     // Collateral to debt ratio checks below
@@ -72,12 +66,12 @@ contract FantomMintBalanceGuard is FantomMintErrorCodes, IFantomMintBalanceGuard
     // isCollateralSufficient checks if collateral value is sufficient
     // to cover the debt (collateral to debt ratio) after
     // predefined adjustments to the collateral and debt values.
-    function isCollateralSufficient(address _account, uint256 subCollateral, uint256 addDebt, uint256 ratio) internal view returns (bool) {
+    function isCollateralSufficient(address _account, address subCollateralToken, uint256 subCollateral, address addDebtToken, uint256 addDebt, uint256 ratio) internal view returns (bool) {
         // calculate the collateral and debt values in ref. denomination
         // for the current exchange rate and balance amounts including
         // given adjustments to both values as requested.
-        uint256 cDebtValue = debtValueOf(_account).add(addDebt);
-        uint256 cCollateralValue = collateralValueOf(_account).sub(subCollateral);
+        uint256 cDebtValue = debtValueAfterAdd(_account, addDebtToken, addDebt);
+        uint256 cCollateralValue = collateralValueAfterSub(_account, subCollateralToken, subCollateral);
 
         // minCollateralValue is the minimal collateral value required for the current debt
         // to be within the minimal allowed collateral to debt ratio
@@ -93,25 +87,25 @@ contract FantomMintBalanceGuard is FantomMintErrorCodes, IFantomMintBalanceGuard
     // without breaking collateral to debt ratio rule.
     function collateralCanDecrease(address _account, address _token, uint256 _amount) public view returns (bool) {
         // collateral to debt ratio must be valid after collateral decrease
-        return isCollateralSufficient(_account, collateralTokenValue(_token, _amount), 0, collateralLowestDebtRatio4dec);
+        return isCollateralSufficient(_account, _token, _amount, address(0), 0, collateralLowestDebtRatio4dec);
     }
 
     // debtCanIncrease checks if the specified amount of debt can be added to the account
     // without breaking collateral to debt ratio rule.
     function debtCanIncrease(address _account, address _token, uint256 _amount) public view returns (bool) {
         // collateral to debt ratio must be valid after debt increase
-        return isCollateralSufficient(_account, 0, debtTokenValue(_token, _amount), collateralLowestDebtRatio4dec);
+        return isCollateralSufficient(_account, address(0), 0, _token, _amount, collateralLowestDebtRatio4dec);
     }
 
     // rewardCanClaim checks if the account can claim accumulated rewards
     // by being on a high enough collateral to debt ratio.
     // Implements abstract function of the <FantomMintRewardManager>.
     function rewardCanClaim(address _account) external view returns (bool) {
-        return isCollateralSufficient(_account, 0, 0, collateralLowestDebtRatio4dec);
+        return isCollateralSufficient(_account, address(0), 0, address(0), 0, collateralLowestDebtRatio4dec);
     }
 
     // rewardIsEligible checks if the account is eligible to receive any reward.
     function rewardIsEligible(address _account) external view returns (bool) {
-        return isCollateralSufficient(_account, 0, 0, rewardEligibilityRatio4dec);
+        return isCollateralSufficient(_account, address(0), 0, address(0), 0, rewardEligibilityRatio4dec);
     }
 }
