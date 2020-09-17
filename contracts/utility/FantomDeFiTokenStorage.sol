@@ -107,11 +107,6 @@ contract FantomDeFiTokenStorage is IFantomDeFiTokenStorage
     // totalOfInc returns the value of current balance of an account
     // with specified token balance increased by given amount of tokens.
     function totalOfInc(address _account, address _token, uint256 _amount) external view returns (uint256 value) {
-        // make sure the token is known
-        if (!isKnownToken(_token)) {
-            return totalOf(_account);
-        }
-
         // calculate the total with token balance adjusted up
         return _totalOf(_account, _token, _amount, 0);
     }
@@ -119,11 +114,6 @@ contract FantomDeFiTokenStorage is IFantomDeFiTokenStorage
     // totalOfDec returns the value of current balance of an account
     // with specified token balance decreased by given amount of tokens.
     function totalOfDec(address _account, address _token, uint256 _amount) external view returns (uint256 value) {
-        // make sure the token is known
-        if (!isKnownToken(_token)) {
-            return totalOf(_account);
-        }
-
         // calculate the total with token balance adjusted down
         return _totalOf(_account, _token, 0, _amount);
     }
