@@ -171,7 +171,7 @@ contract FantomMintRewardManager is FantomMintErrorCodes, IFantomMintRewardManag
     // No more reward tokens remained to be distributed past the
     // epoch duration, so the distribution has to stop.
     function rewardApplicableUntil() public view returns (uint256) {
-        return Math.min(now, rewardEpochEnds);
+        return Math.min(_now(), rewardEpochEnds);
     }
 
     // rewardPerToken calculates the reward share per virtual collateral value
@@ -228,15 +228,15 @@ contract FantomMintRewardManager is FantomMintErrorCodes, IFantomMintRewardManag
         // if the previous reward epoch is about to end sooner than it's expected,
         // calculate remaining reward amount from the previous epoch
         // and add it to the notified reward pushing the leftover to the new epoch
-        if (now < rewardEpochEnds) {
-            uint256 leftover = rewardEpochEnds.sub(now).mul(rewardRate);
+        if (_now() < rewardEpochEnds) {
+            uint256 leftover = rewardEpochEnds.sub(_now()).mul(rewardRate);
             reward = reward.add(leftover);
         }
 
         // start new reward epoch with the new reward rate
         rewardRate = reward.div(rewardEpochLength);
-        rewardEpochEnds = now.add(rewardEpochLength);
-        rewardUpdated = now;
+        rewardEpochEnds = _now().add(rewardEpochLength);
+        rewardUpdated = _now();
 
         // notify new epoch with the updated rewards rate
         emit RewardAdded(reward);
@@ -263,4 +263,8 @@ contract FantomMintRewardManager is FantomMintErrorCodes, IFantomMintRewardManag
 
     // rewardIsEligible (abstract) checks if the account is eligible to receive any reward.
     function rewardIsEligible(address _account) public view returns (bool);
+
+    function _now() internal view returns (uint256) {
+        return now;
+    }
 }

@@ -99,7 +99,7 @@ contract FantomMintRewardDistribution is Initializable, Ownable, FantomMintRewar
     // the call, all the calculations are done inside.
     function rewardPush() public returns (uint256) {
         // check if enough time passed from the last distribution
-        if (now < lastRewardPush.add(minRewardPushInterval)) {
+        if (_now() < lastRewardPush.add(minRewardPushInterval)) {
             return ERR_REWARDS_EARLY;
         }
 
@@ -115,12 +115,12 @@ contract FantomMintRewardDistribution is Initializable, Ownable, FantomMintRewar
         // if this is the first push, simply reset state and return
         // no rewards will be notified since none existed before this
         if (0 == lastRewardPush) {
-            lastRewardPush = now;
+            lastRewardPush = _now();
             return ERR_NO_ERROR;
         }
 
         // how much is unlocked and waiting in the reward pool?
-        uint256 amount = now.sub(lastRewardPush).mul(rewardPerSecond);
+        uint256 amount = _now().sub(lastRewardPush).mul(rewardPerSecond);
         if (amount == 0) {
             return ERR_REWARDS_NONE;
         }
@@ -132,7 +132,7 @@ contract FantomMintRewardDistribution is Initializable, Ownable, FantomMintRewar
         }
 
         // update the time stamp
-        lastRewardPush = now;
+        lastRewardPush = _now();
 
         // notify the amount to the Reward Management (internal call)
         rewardNotifyAmount(amount);
