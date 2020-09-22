@@ -276,3 +276,82 @@ web3.ftm.defaultAccount = account;
     var fUSD = web3.ftm.contract(erc20abi).at(tokenUSD);
     fUSD.addMinter(adrProvider.getFantomMint());
     ```
+## Tests
+
+1. Install nodejs 10.22.0
+2. `npm install -g truffle@v5.1.4` # install truffle v5.1.4
+3. `npm update`
+4. `npm test`
+
+If everything is allright, it should output something along this:
+```
+Compiling your contracts...
+===========================
+> Compiling ./contracts/FantomMint.sol
+> Compiling ./contracts/interfaces/IERC20Detailed.sol
+> Compiling ./contracts/interfaces/IFantomDeFiTokenStorage.sol
+> Compiling ./contracts/interfaces/IFantomMintAddressProvider.sol
+> Compiling ./contracts/interfaces/IFantomMintBalanceGuard.sol
+> Compiling ./contracts/interfaces/IFantomMintRewardManager.sol
+> Compiling ./contracts/interfaces/IFantomMintTokenRegistry.sol
+> Compiling ./contracts/interfaces/IPriceOracleProxy.sol
+> Compiling ./contracts/modules/FantomMintBalanceGuard.sol
+> Compiling ./contracts/modules/FantomMintCollateral.sol
+> Compiling ./contracts/modules/FantomMintConfig.sol
+> Compiling ./contracts/modules/FantomMintDebt.sol
+> Compiling ./contracts/modules/FantomMintErrorCodes.sol
+> Compiling ./contracts/modules/FantomMintRewardManager.sol
+> Compiling ./contracts/test/TestFantomMintRewardDistribution.sol
+> Compiling ./contracts/test/TestPriceOracle.sol
+> Compiling ./contracts/test/TestToken.sol
+> Compiling ./contracts/upgradeability/FantomUpgradeabilityProxy.sol
+> Compiling ./contracts/utility/FantomDeFiTokenStorage.sol
+> Compiling ./contracts/utility/FantomFUSD.sol
+> Compiling ./contracts/utility/FantomMintAddressProvider.sol
+> Compiling ./contracts/utility/FantomMintRewardDistribution.sol
+> Compiling ./contracts/utility/FantomMintTokenRegistry.sol
+> Compiling @openzeppelin/contracts-ethereum-package/contracts/GSN/Context.sol
+> Compiling @openzeppelin/contracts-ethereum-package/contracts/access/Roles.sol
+> Compiling @openzeppelin/contracts-ethereum-package/contracts/access/roles/MinterRole.sol
+> Compiling @openzeppelin/contracts-ethereum-package/contracts/access/roles/PauserRole.sol
+> Compiling @openzeppelin/contracts-ethereum-package/contracts/lifecycle/Pausable.sol
+> Compiling @openzeppelin/contracts-ethereum-package/contracts/math/Math.sol
+> Compiling @openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol
+> Compiling @openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol
+> Compiling @openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol
+> Compiling @openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Burnable.sol
+> Compiling @openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Detailed.sol
+> Compiling @openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Mintable.sol
+> Compiling @openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Pausable.sol
+> Compiling @openzeppelin/contracts-ethereum-package/contracts/token/ERC20/IERC20.sol
+> Compiling @openzeppelin/contracts-ethereum-package/contracts/token/ERC20/SafeERC20.sol
+> Compiling @openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol
+> Compiling @openzeppelin/contracts-ethereum-package/contracts/utils/ReentrancyGuard.sol
+> Compiling @openzeppelin/upgrades/contracts/Initializable.sol
+> Compiling @openzeppelin/upgrades/contracts/upgradeability/AdminUpgradeabilityProxy.sol
+> Compiling @openzeppelin/upgrades/contracts/upgradeability/BaseAdminUpgradeabilityProxy.sol
+> Compiling @openzeppelin/upgrades/contracts/upgradeability/BaseUpgradeabilityProxy.sol
+> Compiling @openzeppelin/upgrades/contracts/upgradeability/Proxy.sol
+> Compiling @openzeppelin/upgrades/contracts/upgradeability/UpgradeabilityProxy.sol
+> Compiling @openzeppelin/upgrades/contracts/utils/Address.sol
+
+
+
+  Contract: FantomMint test
+    ✓ checking single deposit (817ms)
+    ✓ checking multiple deposits (2555ms)
+    ✓ checking single withdrawal (456ms)
+    ✓ checking multiple withdrawals (2520ms)
+    ✓ checking single mint (1924ms)
+    ✓ checking multiple mints (6166ms)
+    ✓ checking single repay (992ms)
+    ✓ checking reward of a single depositor for a single epoch (2601ms)
+    ✓ checking reward of 3 depositors for a single epoch (4936ms)
+    ✓ checking changing reward epochs (6477ms)
+    ✓ checking random rewards (29043ms)
+    ✓ checking dust operations (4257ms)
+    ✓ checking edge functions (1872ms)
+
+
+  13 passing (1m)
+```
